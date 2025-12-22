@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { API_URL } from './route';
 import secureStorage from './secureStoreService';
 
 export const apiClient = axios.create({
-  baseURL: 'http://localhost:8090/api/',
+  baseURL: API_URL,
   timeout: 10000,
 });
 

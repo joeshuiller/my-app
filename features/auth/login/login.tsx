@@ -41,9 +41,6 @@ export default function LoginScreen() {
       });
   };
   
-  if (userLoading) {
-      return <LoadingSpinner />;
-  }
   return (
     <View style={styles.container}>
       
@@ -94,6 +91,9 @@ export default function LoginScreen() {
           {isSubmitting ? "Cargando..." : "Entrar"}
         </Text>
       </TouchableOpacity>
+      {
+        userLoading && <LoadingSpinner />
+      }
       <Text style={styles.register}
         onPress={() => router.push('/(auth)/register')}
       >

@@ -1,32 +1,38 @@
+import { useRegisterMutation } from '@/services/apiService';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { router } from 'expo-router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import * as z from 'zod';
 
-// 1. Definir el esquema de validación (Zod)
 const registerSchema = z.object({
-  nombres: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
+  name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
+  surName: z.string().min(3, "El apellido debe tener al menos 3 caracteres"),
   email: z.string().email("Correo electrónico inválido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
 });
 
-// Extraer el tipo del esquema
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterScreen() {
-  // 2. Inicializar el formulario
+  const [register] = useRegisterMutation();
   const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { nombres: '', email: '', password: '' }
+    defaultValues: { name: '', surName: '', email: '', password: '' }
   });
 
-  // 3. Función de envío
   const onSubmit = async (data: RegisterFormData) => {
-    // Simulación de llamada a API (Spring Boot u otro)
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log("Datos validados:", data);
-    Alert.alert("Éxito", "Usuario registrado correctamente");
+     await register({ name: data.name, surName: data.surName, email: data.email, password: data.password })
+              .unwrap()
+              .then((response:any) => {
+                  Alert.alert("Éxito", "Usuario registrado correctamente");
+                  router.replace('/(auth)/login#login');
+              })
+              .catch((err:any) => {
+                console.log("Datos validados:", err);
+                Alert.alert("Error", err.data?.message || "Error en el inicio de sesión");
+          });
   };
 
   return (
@@ -37,10 +43,10 @@ export default function RegisterScreen() {
       <Text style={styles.label}>Nombre de usuario</Text>
       <Controller
         control={control}
-        name="nombres"
+        name="name"
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={[styles.input, errors.nombres && styles.inputError]}
+            style={[styles.input, errors.name && styles.inputError]}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -48,7 +54,7 @@ export default function RegisterScreen() {
           />
         )}
       />
-      {errors.nombres && <Text style={styles.errorText}>{errors.nombres.message}</Text>}
+      {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
 
       {/* Campo: Email */}
       <Text style={styles.label}>Email</Text>

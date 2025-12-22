@@ -20,10 +20,20 @@ export const apiService = createApi({
         body: credentials,
       }),
     }),
+    register: builder.mutation({
+      query: (credentials) => ({
+        url: 'users/register',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
     getUserProfile: builder.query({
       query: (id) => `users/${id}`,
     }),
   }),
 });
-export const { useLoginMutation } = apiService;
-export const { useGetUserProfileQuery } = apiService;
+export const { 
+  useLoginMutation, 
+  useGetUserProfileQuery,
+  useRegisterMutation
+} = apiService;

@@ -1,14 +1,8 @@
 import { apiService } from '@/services/apiService';
 import secureStorage from '@/services/secureStoreService';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-interface authState {
-  token: string | null;
-  loading:boolean;
-  status:string | number;
-  error?: string;
-  user: { email: string; name: string } | null;
-  isAuthenticated: boolean;
-}
+import { authState } from '../models/authState';
+
 const initialState:  authState = {
     token: null,
     loading: false,
