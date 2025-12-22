@@ -13,15 +13,22 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack>
+            <Stack initialRouteName='(auth)/login'>
               <Stack.Screen 
-              name="login" 
+              name="(auth)/login" 
               options={{ 
                 headerShown: false 
               }}
 
               />
-              <Stack.Screen name="home" options={{ headerShown: false }} />
+              <Stack.Screen 
+              name="(auth)/register" 
+              options={{ 
+               title: 'Registro'
+              }}
+
+              />
+              <Stack.Screen name="(home)" options={{ headerShown: false }} />
             </Stack>
             <StatusBar style="auto" />
       </ThemeProvider>

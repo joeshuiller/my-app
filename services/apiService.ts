@@ -15,7 +15,14 @@ export const apiService = createApi({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
-        url: 'login',
+        url: 'users/login',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
+    register: builder.mutation({
+      query: (credentials) => ({
+        url: 'users/register',
         method: 'POST',
         body: credentials,
       }),
@@ -25,5 +32,8 @@ export const apiService = createApi({
     }),
   }),
 });
-export const { useLoginMutation } = apiService;
-export const { useGetUserProfileQuery } = apiService;
+export const { 
+  useLoginMutation, 
+  useGetUserProfileQuery,
+  useRegisterMutation
+} = apiService;
