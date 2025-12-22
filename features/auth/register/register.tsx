@@ -1,52 +1,55 @@
-
-import { LoadingSpinner } from '@/components/loading';
-import { useLoginMutation } from '@/services/apiService';
-import { useAppDispatch, useAppSelector } from '@/store/hook/action';
-import { setCredentials } from '@/store/reducer/authSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'expo-router';
-import { Controller, useForm } from "react-hook-form";
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import * as z from 'zod';
-const loginSchema = z.object({
+
+// 1. Definir el esquema de validación (Zod)
+const registerSchema = z.object({
+  nombres: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
   email: z.string().email("Correo electrónico inválido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
 });
-// Extraer el tipo del esquema
-type RegisterFormData = z.infer<typeof loginSchema>;
 
-export default function LoginScreen() {
-  const userData = useAppSelector((state: any) => state.user);
-  const userLoading = useAppSelector((state: any) => state.loading);
-  const dispatch = useAppDispatch();
-  const [login] = useLoginMutation();
-   const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' }
+// Extraer el tipo del esquema
+type RegisterFormData = z.infer<typeof registerSchema>;
+
+export default function RegisterScreen() {
+  // 2. Inicializar el formulario
+  const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { nombres: '', email: '', password: '' }
   });
-  const router = useRouter();
+
+  // 3. Función de envío
   const onSubmit = async (data: RegisterFormData) => {
+    // Simulación de llamada a API (Spring Boot u otro)
+    await new Promise(resolve => setTimeout(resolve, 2000));
     console.log("Datos validados:", data);
-    await login({ email: data.email, password: data.password })
-          .unwrap()
-          .then((response:any) => {
-            dispatch(setCredentials(response));
-            if (userData.isAuthenticated) {
-              Alert.alert("Éxito", "Usuario registrado correctamente");
-            }
-          })
-          .catch((err:any) => {
-            console.log("Datos validados:", err);
-            Alert.alert("Error", err.data?.message || "Error en el inicio de sesión");
-      });
+    Alert.alert("Éxito", "Usuario registrado correctamente");
   };
-  
-  if (userLoading) {
-      return <LoadingSpinner />;
-  }
+
   return (
     <View style={styles.container}>
-      
+      <Text style={styles.title}>Crear Cuenta</Text>
+
+      {/* Campo: Usuario */}
+      <Text style={styles.label}>Nombre de usuario</Text>
+      <Controller
+        control={control}
+        name="nombres"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={[styles.input, errors.nombres && styles.inputError]}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            placeholder="Ej: juan_perez"
+          />
+        )}
+      />
+      {errors.nombres && <Text style={styles.errorText}>{errors.nombres.message}</Text>}
+
       {/* Campo: Email */}
       <Text style={styles.label}>Email</Text>
       <Controller
@@ -91,38 +94,17 @@ export default function LoginScreen() {
         disabled={isSubmitting}
       >
         <Text style={styles.buttonText}>
-          {isSubmitting ? "Cargando..." : "Entrar"}
+          {isSubmitting ? "Cargando..." : "Registrarse"}
         </Text>
       </TouchableOpacity>
-      <Text style={styles.register}
-        onPress={() => router.push('/(auth)/register')}
-      >
-         Regístrate
-      </Text>
     </View>
-    
   );
 }
 
 const styles = StyleSheet.create({
-  form:{
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 10,
-  },
   container: { padding: 20, flex: 1, justifyContent: 'center', backgroundColor: '#fff' },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
   label: { fontSize: 14, fontWeight: '600', marginBottom: 5, color: '#333' },
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
   input: { 
     borderWidth: 1, 
     borderColor: '#ddd', 
@@ -142,10 +124,4 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: { backgroundColor: '#ccc' },
   buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-  register: { 
-    marginTop: 20, 
-    color: '#007AFF', 
-    textAlign: 'center', 
-    textDecorationLine: 'underline' 
-  },
 });

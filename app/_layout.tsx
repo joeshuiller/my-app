@@ -21,6 +21,13 @@ export default function RootLayout() {
               }}
 
               />
+              <Stack.Screen 
+              name="(auth)/register" 
+              options={{ 
+               title: 'Registro'
+              }}
+
+              />
               <Stack.Screen name="(home)" options={{ headerShown: false }} />
             </Stack>
             <StatusBar style="auto" />

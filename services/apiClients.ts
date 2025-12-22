@@ -2,7 +2,7 @@ import axios from 'axios';
 import secureStorage from './secureStoreService';
 
 export const apiClient = axios.create({
-  baseURL: 'https://api.tu-app.com',
+  baseURL: 'http://localhost:8090/api/',
   timeout: 10000,
 });
 
