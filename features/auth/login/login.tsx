@@ -27,8 +27,7 @@ export default function LoginScreen() {
   const router = useRouter();
   const onSubmit = async (data: RegisterFormData) => {
     console.log("Datos validados:", data);
-    await login({ email: data.email, password: data.password })
-          .unwrap()
+    await login(data)
           .then((response:any) => {
             dispatch(setCredentials(response));
             if (userData.isAuthenticated) {
