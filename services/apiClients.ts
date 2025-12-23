@@ -11,6 +11,8 @@ apiClient.interceptors.request.use(
   async (config) => {
     // Recuperar token guardado de forma segura
     const token = await secureStorage.getToken();
+    config.headers.Accept = 'application/json';
+    config.headers['Content-Type'] = 'application/json';
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
