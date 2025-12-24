@@ -36,7 +36,7 @@ export default function LoginScreen() {
           })
           .catch((err:any) => {
             console.log("Datos validados:", err);
-            Alert.alert("Error", err.data?.message || "Error en el inicio de sesión");
+            Alert.alert("Error", err.TypeError || "Error en el inicio de sesión");
       });
   };
   

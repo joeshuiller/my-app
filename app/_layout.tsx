@@ -1,3 +1,4 @@
+import getHeaderTitle from '@/components/title';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { store } from '@/store/store';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
@@ -28,7 +29,11 @@ export default function RootLayout() {
               }}
 
               />
-              <Stack.Screen name="(home)" options={{ headerShown: false }} />
+              <Stack.Screen 
+                name="(home)"
+                options={({ route }) => ({
+                  headerTitle: getHeaderTitle(route),
+                })} />
             </Stack>
             <StatusBar style="auto" />
       </ThemeProvider>
