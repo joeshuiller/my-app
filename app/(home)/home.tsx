@@ -1,5 +1,5 @@
 import HomeScreen from "@/features/auth/home/home";
 
-export default function Page() {
+export default function PageHome() {
   return <HomeScreen />;
 }

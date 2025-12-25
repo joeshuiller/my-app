@@ -33,7 +33,7 @@ const authSlice = createSlice({
     // Escuchar cuando el login de la API sea exitoso
     builder
         .addMatcher(
-            apiService.endpoints.getUserProfile.matchPending,
+            apiService.endpoints.login.matchPending,
             (state, action) => {
                 state.loading = true;
             }
@@ -47,7 +47,7 @@ const authSlice = createSlice({
           }
         )
         .addMatcher(
-            apiService.endpoints.getUserProfile.matchRejected,
+            apiService.endpoints.login.matchRejected,
             (state, action) => {
               state.loading = false;
               state.status = action.payload?.status;

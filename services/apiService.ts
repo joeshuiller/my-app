@@ -30,10 +30,26 @@ export const apiService = createApi({
     getUserProfile: builder.query({
       query: (id) => `users/${id}`,
     }),
+    getTaskUsers: builder.mutation({
+      query: (credentials) => ({
+        url: 'task/listTaskUsers',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
+    registerTaskUsers: builder.mutation({
+      query: (credentials) => ({
+        url: 'task/register',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
   }),
 });
 export const { 
   useLoginMutation, 
   useGetUserProfileQuery,
-  useRegisterMutation
+  useRegisterMutation,
+  useGetTaskUsersMutation,
+  useRegisterTaskUsersMutation
 } = apiService;

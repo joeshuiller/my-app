@@ -16,8 +16,8 @@ const loginSchema = z.object({
 type RegisterFormData = z.infer<typeof loginSchema>;
 
 export default function LoginScreen() {
-  const userData = useAppSelector((state: any) => state.user);
-  const userLoading = useAppSelector((state: any) => state.loading);
+  const userData = useAppSelector((state: any) => state.auth.token);
+  const userLoading = useAppSelector((state: any) => state.auth.loading);
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
    const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormData>({
@@ -36,7 +36,7 @@ export default function LoginScreen() {
           })
           .catch((err:any) => {
             console.log("Datos validados:", err);
-            Alert.alert("Error", err.data?.message || "Error en el inicio de sesión");
+            Alert.alert("Error", err.TypeError || "Error en el inicio de sesión");
       });
   };
   

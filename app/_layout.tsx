@@ -1,3 +1,4 @@
+import getHeaderTitle from '@/components/title';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { store } from '@/store/store';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
@@ -13,7 +14,14 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack initialRouteName='(auth)/login'>
+            <Stack initialRouteName='index'>
+            <Stack.Screen 
+              name="index" 
+              options={{ 
+                headerShown: false 
+              }}
+
+              />
               <Stack.Screen 
               name="(auth)/login" 
               options={{ 
@@ -28,7 +36,11 @@ export default function RootLayout() {
               }}
 
               />
-              <Stack.Screen name="(home)" options={{ headerShown: false }} />
+              <Stack.Screen 
+                name="(home)"
+                options={({ route }) => ({
+                  headerTitle: getHeaderTitle(route),
+                })} />
             </Stack>
             <StatusBar style="auto" />
       </ThemeProvider>
