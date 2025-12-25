@@ -1,5 +1,5 @@
 
-import { useRegisterMutation } from '@/services/apiService';
+import { useRegisterTaskUsersMutation } from '@/services/apiService';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
 import React from 'react';
@@ -14,14 +14,14 @@ const taskSchema = z.object({
 type TaskFormData = z.infer<typeof taskSchema>;
 
 export default function DetailsScreen() {
-    const [register] = useRegisterMutation();
+    const [registerTaskUsers] = useRegisterTaskUsersMutation();
     const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<TaskFormData>({
       resolver: zodResolver(taskSchema),
       defaultValues: { title: '', description: '', dateExpiration: '' }
     });
   
     const onSubmit = async (data: TaskFormData) => {
-       await register(data)
+       await registerTaskUsers(data)
                 .unwrap()
                 .then((response:any) => {
                     Alert.alert("Éxito", "Usuario registrado correctamente");
